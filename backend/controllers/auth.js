@@ -1,7 +1,7 @@
 import axios from 'axios'
 import "dotenv/config";
 
-export default async function handleLinkedinCallback(authCode){
+export async function handleLinkedinCallback(authCode){
     const response = await axios({
         method: 'post',
         url: 'https://www.linkedin.com/oauth/v2/accessToken',
