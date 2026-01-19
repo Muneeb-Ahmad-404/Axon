@@ -1,6 +1,5 @@
 import express from "express";
 import "dotenv/config";
-import axios from "axios";
 import {handleLinkedinCallback} from "../controllers/auth.js";
 
 const router = express.Router();
