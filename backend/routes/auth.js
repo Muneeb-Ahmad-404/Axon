@@ -9,7 +9,7 @@ const router = express.Router();
 //get code...
 router.get(`/linkedin`, (req, res) => {
     try{
-        const linkedinAuthUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.LINKEDIN_REDIRECT_URI}&state=foobar&scope=openid%20profile%20email`;
+        const linkedinAuthUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.LINKEDIN_REDIRECT_URI}&state=foobar&scope=openid%20profile%20email%20w_member_social`;
         
         res.redirect(linkedinAuthUrl);
     }
