@@ -23,6 +23,7 @@ export function verifyLinkedinState(req, res, next){
         });
     }
 
+    req.session.cookie.maxAge = 7* 24* 60 * 60 * 1000; //extend session for 7 days
     delete req.session.oauthState;
     next();
 }
