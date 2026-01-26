@@ -36,9 +36,16 @@ router.get("/linkedin/callback", async (req, res) => {
     try{
         const response = await handleLinkedinCallback(authCode);
 
+        // Store access token in an HTTP-only, secure cookie instead of exposing it in the response body
+        res.cookie("linkedin_access_token", response.data.access_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "lax",
+            maxAge: 60 * 60 * 1000 // 1 hour
+        });
+
         return res.send({
-            message: "Success",
-            access_token: response.data.access_token
+            message: "Success"
         });
     }
     catch (error) {
