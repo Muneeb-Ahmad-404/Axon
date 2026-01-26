@@ -25,15 +25,30 @@ router.get("/linkedin/callback", verifyLinkedinState, async (req, res) => {
     try{
         const response = await handleLinkedinCallback(authCode);
 
+        // Store access token in an HTTP-only, secure cookie instead of exposing it in the response body
+        res.cookie("linkedin_access_token", response.data.access_token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "lax",
+            maxAge: 60 * 60 * 1000 // 1 hour
+        });
+
         return res.send({
-            message: "Success",
-            access_token: response.data.access_token
+            message: "Success"
         });
     }
     catch (error) {
+        // Log detailed error information server-side for debugging/monitoring
+        console.error("LinkedIn callback error:", {
+            status: error.response?.status,
+            data: error.response?.data,
+            message: error.message,
+        });
+
+        // Return a generic error message to the client without exposing LinkedIn's response payload
         return res.status(error.response?.status || 500).send({
-            "title": "Exchange Failed",
-            "details": error.response?.data
+            title: "Exchange Failed",
+            message: "An error occurred while exchanging the authorization code. Please try again later.",
         });
     }
 });

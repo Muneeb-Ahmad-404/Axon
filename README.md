@@ -40,7 +40,7 @@ git clone [https://github.com/Muneeb-Ahmad-404/axon.git](https://github.com/Mune
 
 2. **Install dependencies:**
 ```bash
-npm install
+cd backend && npm install
 
 ```
 
