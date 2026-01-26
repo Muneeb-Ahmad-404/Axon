@@ -1,29 +1,18 @@
 import express from "express";
 import "dotenv/config";
-import {handleLinkedinCallback} from "../controllers/auth.js";
+import {handleLinkedinCallback, initiateLinkedinAuth, verifyLinkedinState} from "../controllers/auth.js";
 
 const router = express.Router();
+
+
 //LINKEDIN
 //OAUTH 2.0
 
 //get code...
-router.get(`/linkedin`, (req, res) => {
-    try{
-        const linkedinAuthUrl = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${process.env.LINKEDIN_CLIENT_ID}&redirect_uri=${process.env.LINKEDIN_REDIRECT_URI}&state=foobar&scope=openid%20profile%20email%20w_member_social`;
-        
-        res.redirect(linkedinAuthUrl);
-    }
-    catch(error){
-        return res.send({
-            "title": "error",
-            "message": error.message
-        });
-    };
-})
-
+router.get(`/linkedin`, initiateLinkedinAuth);
 
 //callback -- get access token
-router.get("/linkedin/callback", async (req, res) => {
+router.get("/linkedin/callback", verifyLinkedinState, async (req, res) => {
     const {code: authCode} = req.query;
 
     if(!authCode){
