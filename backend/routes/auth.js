@@ -49,9 +49,17 @@ router.get("/linkedin/callback", async (req, res) => {
         });
     }
     catch (error) {
+        // Log detailed error information server-side for debugging/monitoring
+        console.error("LinkedIn callback error:", {
+            status: error.response?.status,
+            data: error.response?.data,
+            message: error.message,
+        });
+
+        // Return a generic error message to the client without exposing LinkedIn's response payload
         return res.status(error.response?.status || 500).send({
-            "title": "Exchange Failed",
-            "details": error.response?.data
+            title: "Exchange Failed",
+            message: "An error occurred while exchanging the authorization code. Please try again later.",
         });
     }
 });
